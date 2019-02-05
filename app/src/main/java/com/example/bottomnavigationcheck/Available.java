@@ -10,10 +10,6 @@ public class Available {
     ArrayList<String[]> names;
     Available() {
         names = new ArrayList<String[]>();
-//        names.add(new String[] {"anime", "Ebanaya Milaha"});
-//        names.add(new String[] {"anime", "Ebanaya Milaha"});
-//        names.add(new String[] {"anime", "Ebanaya Milaha"});
-//        names.add(new String[] {"anime", "Ebanaya Milaha"});
         names.add(new String[] {"asunar", "Yuuki Asuna"});
         names.add(new String[] {"remr", "Rem"});
         names.add(new String[] {"haruhir", "Haruhi Suzumiya"});
