@@ -17,6 +17,9 @@ public class Available {
         names.add(new String[] {"hiyorir", "Iki Hiyori"});
         names.add(new String[] {"misakiayur", "Misaki Ayuzawa"});
         names.add(new String[] {"02r", "Zero Two"});
+        names.add(new String[] {"mikasar", "Mikasa Ackerman"});
+        names.add(new String[] {"mair", "Mai Sakurajima"});
+        names.add(new String[] {"saberr", "Saber"});
     }
 
     public int getSize() {
