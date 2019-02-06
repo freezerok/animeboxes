@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         clearTyans.setVisibility(View.VISIBLE);
         mTextMessage.setVisibility(View.VISIBLE);
         mTextMessage.setTextSize(24);
-        mTextMessage.setText("You've got " + Integer.toString(numberOfUnits) + " tyans");
+        mTextMessage.setText("You've got " + Integer.toString(numberOfUnits) + " girls");
     }
 
     private void writeValues() {

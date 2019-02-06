@@ -20,6 +20,13 @@ public class Available {
         names.add(new String[] {"mikasar", "Mikasa Ackerman"});
         names.add(new String[] {"mair", "Mai Sakurajima"});
         names.add(new String[] {"saberr", "Saber"});
+        names.add(new String[] {"akamer", "Akame"});
+        names.add(new String[] {"miner", "Mine"});
+        names.add(new String[] {"esdeathr", "Esdeath"});
+        names.add(new String[] {"meguminr", "Megumin"});
+        names.add(new String[] {"aquar", "Aqua"});
+        names.add(new String[] {"lalatinar", "Lalatina Dustiness Ford"});
+        names.add(new String[] {"shiror", "Shiro"});
     }
 
     public int getSize() {
