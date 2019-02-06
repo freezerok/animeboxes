@@ -1,5 +1,6 @@
 package com.example.bottomnavigationcheck;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         buyBox.setVisibility(View.VISIBLE);
         clearTyans.setVisibility(View.INVISIBLE);
         mTextMessage.setTextSize(30);
-        mTextMessage.setText("ДОНАТИКИ СУКА");
+        mTextMessage.setText("Support us pls");
     }
 
     private void setupOpening() {
@@ -46,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         buyBox.setVisibility(View.INVISIBLE);
         clearTyans.setVisibility(View.INVISIBLE);
         mTextMessage.setTextSize(24);
-        mTextMessage.setText("У тебя " + Integer.toString(numberOfBoxes) + " коробочек");
-    };
+        mTextMessage.setText("You've got " + Integer.toString(numberOfBoxes) + " boxes");
+    }
 
     private void setupList() {
         updateList();
@@ -57,13 +58,17 @@ public class MainActivity extends AppCompatActivity {
         clearTyans.setVisibility(View.VISIBLE);
         mTextMessage.setVisibility(View.VISIBLE);
         mTextMessage.setTextSize(24);
-        mTextMessage.setText("У тебя " + Integer.toString(numberOfUnits) + " тяночек");
-    };
+        mTextMessage.setText("You've got " + Integer.toString(numberOfUnits) + " tyans");
+    }
 
     private void writeValues() {
         FileOutputStream fos = null;
         try {
             String out = Integer.toString(numberOfBoxes) + " " + Integer.toString(numberOfUnits);
+            out += " ";
+            for (int i = 0; i < numberOfUnits; i++) {
+                out += getShort(list.get(i).getName()) + " ";
+            }
             fos = openFileOutput(FILENAME, MODE_PRIVATE);
             fos.write(out.getBytes());
 //            Toast.makeText(this, "Файл сохранен", Toast.LENGTH_LONG).show();
@@ -87,14 +92,14 @@ public class MainActivity extends AppCompatActivity {
             byte[] bytes = new byte[fin.available()];
             fin.read(bytes);
             String text = new String (bytes);
-            String textArr[] = text.split("[ ]+");
+            String textArr[] = text.split(" ");
             numberOfBoxes = Integer.parseInt(textArr[0]);
             numberOfUnits = Integer.parseInt(textArr[1]);
+//            Toast.makeText(this, numberOfUnits, Toast.LENGTH_LONG).show();
             for (int i = 0; i < numberOfUnits; i++) {
                 String nxtName = textArr[i + 2];
-                addToList(nxtName);
+                addToList("mipmap/ic_" + nxtName);
             }
-//            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
         } catch(IOException ex) {
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -118,13 +123,22 @@ public class MainActivity extends AppCompatActivity {
         return "anime";
     }
 
+    private String getShort(String realName) {
+        for (int i = 0; i < availableList.getSize(); i++) {
+            if (availableList.names.get(i)[1].equals(realName)) {
+                return availableList.names.get(i)[0];
+            }
+        }
+        return "anime";
+    }
+
     private void addToList(String name) {
         String shortName;
         int posStart = -1, posEnd = name.length();
         for (int i = 0; i < name.length(); i++) {
             if (name.charAt(i) == '_' && posStart == -1) {
                 posStart = i + 1;
-            } else if (name.charAt(i) == '_' && posEnd == -1) {
+            } else if (name.charAt(i) == '_' && posEnd == name.length()) {
                 posEnd = i;
             }
         }
@@ -143,26 +157,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        lvMain = (ListView) findViewById(R.id.lvMain);
+        lvMain = findViewById(R.id.lvMain);
         lvMain.setAdapter(boxAdapter);
     }
 
     private void init() {
-        readValues();
         availableList = new Available();
         boxAdapter = new TyanList(this, list);
-        mTextMessage = (TextView) findViewById(R.id.message);
-        buyBox = (Button) findViewById(R.id.buy);
-        openBox = (Button) findViewById(R.id.open);
-        clearTyans = (Button) findViewById(R.id.clear);
+        mTextMessage = findViewById(R.id.message);
+        buyBox = findViewById(R.id.buy);
+        openBox = findViewById(R.id.open);
+        clearTyans = findViewById(R.id.clear);
         mTextMessage.setVisibility(View.INVISIBLE);
         buyBox.setVisibility(View.INVISIBLE);
         openBox.setVisibility(View.INVISIBLE);
         buyBox.setOnClickListener(onClickListener);
         openBox.setOnClickListener(onClickListener);
         clearTyans.setOnClickListener(onClickListener);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        readValues();
         setupList();
     }
 
@@ -177,13 +191,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.open:
                     if (numberOfBoxes == 0) {
                         mTextMessage.setTextSize(15);
-                        mTextMessage.setText("У вас не хватает коробочек, купить еще можно справа");
+                        mTextMessage.setText(getString(R.string.notEnoughBoxes));
                         break;
                     }
                     numberOfBoxes--;
                     numberOfUnits++;
-                    writeValues();
                     addRandomToList();
+                    writeValues();
                     setupOpening();
                     break;
                 case R.id.clear:
@@ -224,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        resetValues();
+//        resetValues();
         init();
     }
 
