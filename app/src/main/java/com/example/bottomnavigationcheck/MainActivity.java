@@ -1,6 +1,7 @@
 package com.example.bottomnavigationcheck;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -149,11 +150,24 @@ public class MainActivity extends AppCompatActivity {
         updateList();
     }
 
-    private void addRandomToList() {
+    public boolean haveTyan(String realName) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getName().equals(realName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean addRandomToList() {
         int min = 0;
         int max = availableList.getSize() - 1;
         int position = min + (int)(Math.random() * (max - min + 1));
+        if (haveTyan(availableList.names.get(position)[1])) {
+            return false;
+        }
         addToList("mipmap/ic_" + availableList.names.get(position)[0]);
+        return  true;
     }
 
     private void updateList() {
@@ -195,8 +209,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                     numberOfBoxes--;
-                    numberOfUnits++;
-                    addRandomToList();
+                    if (addRandomToList()) {
+                        numberOfUnits++;
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You have got this one, sorry", Toast.LENGTH_LONG).show();
+                    }
                     writeValues();
                     setupOpening();
                     break;
